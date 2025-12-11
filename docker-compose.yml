@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  frontend:
+    image: mani944/devops-build:latest
+    container_name: devops-build
+    ports:
+      - "80:80"
+    restart: unless-stopped
