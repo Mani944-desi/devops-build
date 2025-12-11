@@ -1,0 +1,80 @@
+*************************************************************** Jenkins status *************************************************************
+● jenkins.service - Jenkins Continuous Integration Server
+     Loaded: loaded (/lib/systemd/system/jenkins.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2025-12-11 10:55:16 UTC; 1h 23min ago
+   Main PID: 10594 (java)
+      Tasks: 50 (limit: 2268)
+     Memory: 586.4M
+        CPU: 1min 11.625s
+     CGroup: /system.slice/jenkins.service
+             └─10594 /usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot>
+
+Dec 11 10:55:13 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:13.533+0000 [id=29]        INFO      >
+Dec 11 10:55:13 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:13.560+0000 [id=32]        INFO      >
+Dec 11 10:55:14 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:14.293+0000 [id=29]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:16.435+0000 [id=30]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:16.437+0000 [id=31]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:16.505+0000 [id=32]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:16.515+0000 [id=32]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:16.591+0000 [id=29]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 jenkins[10594]: 2025-12-11 10:55:16.627+0000 [id=23]        INFO      >
+Dec 11 10:55:16 ip-172-31-72-85 systemd[1]: Started Jenkins Continuous Integration Server.
+lines 1-20/20 (END)
+[3]+  Stopped                 sudo systemctl status jenkins
+ubuntu@ip-172-31-72-85:~/devops-build$ 
+
+******************************************************************** port 80 Listen *************************************************************
+
+buntu@ip-172-31-72-85:~/devops-build$ sudo ss -tulnp | grep :80
+tcp   LISTEN 0      4096             0.0.0.0:80         0.0.0.0:*    users:(("docker-proxy",pid=11904,fd=7))   
+tcp   LISTEN 0      4096                [::]:80            [::]:*    users:(("docker-proxy",pid=11911,fd=7))   
+tcp   LISTEN 0      50                     *:8080             *:*    users:(("java",pid=10594,fd=8))           
+
+*********************************************** React status **************************************************************************************
+
+curl -I http://localhost
+HTTP/1.1 200 OK
+Server: nginx/1.29.4
+Date: Thu, 11 Dec 2025 12:17:48 GMT
+Content-Type: text/html
+Content-Length: 961
+Last-Modified: Thu, 11 Dec 2025 10:02:43 GMT
+Connection: keep-alive
+ETag: "693a96c3-3c1"
+Accept-Ranges: bytes
+
+************************************************* Docker container ************************************************************************************
+
+ubuntu@ip-172-31-72-85:~/devops-build$ sudo docker ps 
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS          PORTS                                 NAMES
+7c0face991bd   mani944desi/devops-build-dev:latest   "/docker-entrypoint.…"   15 minutes ago   Up 15 minutes   0.0.0.0:80->80/tcp, [::]:80->80/tcp   devops-build
+
+******************************************************************** Docker running status *********************************************************
+
+sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2025-12-11 10:55:03 UTC; 1h 21min ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 10342 (dockerd)
+      Tasks: 24
+     Memory: 52.9M
+        CPU: 1.119s
+     CGroup: /system.slice/docker.service
+             ├─10342 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+             ├─11904 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 80 -container-ip 172>
+             └─11911 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 80 -container-ip 172.17.0>
+
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.462498684Z" level=warning ms>
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.516430109Z" level=info msg=">
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.548641082Z" level=info msg=">
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.549317493Z" level=info msg=">
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.558520713Z" level=warning ms>
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.558551944Z" level=warning ms>
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.589351007Z" level=info msg=">
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.598793803Z" level=info msg=">
+Dec 11 10:55:03 ip-172-31-72-85 dockerd[10342]: time="2025-12-11T10:55:03.598896807Z" level=info msg=">
+Dec 11 10:55:03 ip-172-31-72-85 systemd[1]: Started Docker Application Container Engine.
+
+***************************************************************************************************************************************************************************************************************
